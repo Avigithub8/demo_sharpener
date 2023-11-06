@@ -90,3 +90,14 @@ console.log(newElement);
 
 let itemList=document.getElementById('items');
 itemList.appendChild(newElement);
+
+
+let helloWorld = document.createTextNode('Hello World');
+
+let headerTitle=document.getElementById('header-title');
+headerTitle.insertBefore(helloWorld,headerTitle.firstChild);
+
+
+let firstli=document.getElementById('items').firstElementChild;
+let helloWorldText = document.createTextNode('Hello World');
+firstli.insertBefore(helloWorldText,firstli.firstChild);
