@@ -1,6 +1,7 @@
 let form=document.getElementById('addForm');
 let listItem=document.getElementById('items');
 let filter=document.getElementById('filter');
+let edit=document.getElementById('edit')
 //form submit
 form.addEventListener('submit',addItems);
 
@@ -10,23 +11,32 @@ listItem.addEventListener('click',removeItem);
 //filter event
 filter.addEventListener('keyup',filterItems);
 
+//editbtn
+edit.addEventListener('click',editItems);
+
 function addItems(e){
     e.preventDefault();
 
     // Get input value
-    let inputItem=document.getElementById('item').value;
-
+     let inputItem=document.getElementById('item').value;
+      
+     let inputdes=document.getElementById('description').value;
+  
     // create new li element
     let li=document.createElement('li');
-
+      
     //add name of this class
     li.className='list-group-item';
+    
 
     //add text node with input value
-    let addtext=document.createTextNode(inputItem);
+    let addtext=document.createTextNode(inputItem + ' ');
+    
+    let adddes=document.createTextNode(inputdes);
 
     // append the text node in list
     li.appendChild(addtext);
+    li.appendChild(adddes);
 
     // create delete btn
     let delBtn=document.createElement('button');
@@ -42,8 +52,20 @@ function addItems(e){
     // append delete btn to list
     li.appendChild(delBtn);
 
+    
+   
+
+    let editBtn=document.createElement('button');
+    editBtn.className='btn btn-sm float-right editbtn';
+    editBtn.appendChild(document.createTextNode('EDIT'));
+    li.appendChild(editBtn);
+
     // append list to list item
     listItem.appendChild(li);
+
+    document.getElementById('item').value='';
+    document.getElementById('description').value='';
+   
 }
 
 
@@ -74,4 +96,24 @@ function filterItems(e){
             item.style.display='none';
         }
     })
+}
+
+
+function editItems(e){
+    e.preventDefault();
+
+    if(e.target.classList.contains('editbtn')){
+        let li=e.target.parentElement;
+
+        let itemText=li.firstChild.textContent.trim();
+        let itemDescription=li.childNodes[1].textContent.trim();
+        
+        let newText=prompt('Edit Item:',itemText);
+        let newDes=prompt('Edit Desc:',itemDescription);
+
+        if(newText!==null && newDes!==null){
+            li.firstChild.textContent=newText + ' ';
+            li.childNodes[1].textContent=newDes;
+        }
+    }
 }
