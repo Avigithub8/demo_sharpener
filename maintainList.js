@@ -6,10 +6,12 @@ const userList = document.querySelector('#users');
 
 const storedUsers = JSON.parse(localStorage.getItem('users'))||[];
 
-// Listen for form submit
+
 myForm.addEventListener('submit', onSubmit);
 
 userList.addEventListener('click',onDelete);
+
+userList.addEventListener('click',onEdit);
 
 function onSubmit(e) {
   e.preventDefault();
@@ -36,6 +38,7 @@ function onSubmit(e) {
 function renderUsers(users){
     userList.innerHTML=users.map((user,i)=> `<li>${user.name}: ${user.email}
     <button class="deletebtn" index="${i}">Delete</button>
+    <button class="editbtn" index="${i}">Edit</button>
     </li>`).join('');
 };
 
@@ -50,3 +53,17 @@ renderUsers(storedUsers);
         localStorage.setItem('users', JSON.stringify(storedUsers));
     }
 };
+
+function onEdit(e){
+    if (e.target.classList.contains('editbtn')) {
+        const idx = e.target.getAttribute('index');
+        const userToEdit = storedUsers[idx];
+        nameInput.value = userToEdit.name;
+        emailInput.value = userToEdit.email;
+
+        storedUsers.splice(idx, 1);
+        renderUsers(storedUsers);
+        localStorage.setItem('users', JSON.stringify(storedUsers));
+       
+    }
+}
