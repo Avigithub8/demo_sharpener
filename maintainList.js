@@ -9,6 +9,8 @@ const storedUsers = JSON.parse(localStorage.getItem('users'))||[];
 // Listen for form submit
 myForm.addEventListener('submit', onSubmit);
 
+userList.addEventListener('click',onDelete);
+
 function onSubmit(e) {
   e.preventDefault();
   
@@ -23,7 +25,7 @@ function onSubmit(e) {
     renderUsers(storedUsers);
 
     localStorage.setItem('users',JSON.stringify(storedUsers));
-
+    localStorage.removeItem('users[1]');
     nameInput.value = '';
     emailInput.value = '';
   }
@@ -32,7 +34,19 @@ function onSubmit(e) {
 }
 
 function renderUsers(users){
-    userList.innerHTML=users.map(user=> `<li>${user.name}: ${user.email}</li>`).join('');
+    userList.innerHTML=users.map((user,i)=> `<li>${user.name}: ${user.email}
+    <button class="deletebtn" index="${i}">Delete</button>
+    </li>`).join('');
 };
 
 renderUsers(storedUsers);
+
+
+ function onDelete(e) {
+    if (e.target.classList.contains('deletebtn')) {
+        const idx = e.target.getAttribute('index');
+        storedUsers.splice(idx, 1);
+        renderUsers(storedUsers);
+        localStorage.setItem('users', JSON.stringify(storedUsers));
+    }
+};
